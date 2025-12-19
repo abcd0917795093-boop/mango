@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <title>芒果訂單表</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #fff8e7; }
+        h1 { color: #f16c00; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th, td { border: 1px solid #f2a654; padding: 10px; text-align: center; }
         th { background-color: #f2a654; color: white; }
-        input[type="text"], input[type="number"] { padding: 5px; }
-        button { padding: 5px 10px; margin-left: 5px; }
+        input[type="text"], input[type="number"] { padding: 5px; width: 150px; }
+        button { padding: 5px 10px; margin-left: 5px; background-color: #f2a654; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #d97e3f; }
+        #totalAmount { margin-top: 15px; font-weight: bold; font-size: 18px; }
+        .input-container { margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <h1>芒果訂單表</h1>
-    <div>
+    <div class="input-container">
         <label>姓名: <input type="text" id="name"></label>
         <label>數量: <input type="number" id="quantity" min="1"></label>
         <button onclick="addOrder()">新增訂單</button>
@@ -27,14 +31,27 @@
                 <th>數量</th>
                 <th>單價</th>
                 <th>總價</th>
+                <th>操作</th>
             </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody></tbody>
     </table>
 
+    <div id="totalAmount">總金額：0 元</div>
+
     <script>
-        const unitPrice = 50; // 假設每顆芒果 50 元
+        const unitPrice = 50; // 每顆芒果單價
+        let orders = [];
+
+        // 初始化讀取 LocalStorage
+        window.onload = function() {
+            const savedOrders = localStorage.getItem('mangoOrders');
+            if (savedOrders) {
+                orders = JSON.parse(savedOrders);
+                renderTable();
+            }
+        }
+
         function addOrder() {
             const name = document.getElementById('name').value.trim();
             const quantity = parseInt(document.getElementById('quantity').value);
@@ -44,23 +61,50 @@
                 return;
             }
 
-            const table = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
+            const total = quantity * unitPrice;
+            orders.push({ name, quantity, total });
+            saveOrders();
+            renderTable();
 
-            const cellName = newRow.insertCell(0);
-            const cellQuantity = newRow.insertCell(1);
-            const cellUnit = newRow.insertCell(2);
-            const cellTotal = newRow.insertCell(3);
-
-            cellName.textContent = name;
-            cellQuantity.textContent = quantity;
-            cellUnit.textContent = unitPrice;
-            cellTotal.textContent = quantity * unitPrice;
-
-            // 清空輸入欄位
             document.getElementById('name').value = '';
             document.getElementById('quantity').value = '';
+        }
+
+        function deleteOrder(index) {
+            if (confirm('確定要刪除這筆訂單嗎？')) {
+                orders.splice(index, 1);
+                saveOrders();
+                renderTable();
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
+            tbody.innerHTML = '';
+            let sum = 0;
+
+            orders.forEach((order, index) => {
+                const row = tbody.insertRow();
+                row.insertCell(0).textContent = order.name;
+                row.insertCell(1).textContent = order.quantity;
+                row.insertCell(2).textContent = unitPrice;
+                row.insertCell(3).textContent = order.total;
+                const actionCell = row.insertCell(4);
+                const delBtn = document.createElement('button');
+                delBtn.textContent = '刪除';
+                delBtn.onclick = () => deleteOrder(index);
+                actionCell.appendChild(delBtn);
+
+                sum += order.total;
+            });
+
+            document.getElementById('totalAmount').textContent = '總金額：' + sum + ' 元';
+        }
+
+        function saveOrders() {
+            localStorage.setItem('mangoOrders', JSON.stringify(orders));
         }
     </script>
 </body>
 </html>
+
