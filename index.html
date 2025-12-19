@@ -22,6 +22,7 @@
         <label>姓名: <input type="text" id="name"></label>
         <label>數量: <input type="number" id="quantity" min="1"></label>
         <button onclick="addOrder()">新增訂單</button>
+        <button onclick="exportCSV()">匯出 CSV</button>
     </div>
 
     <table id="orderTable">
@@ -103,6 +104,29 @@
 
         function saveOrders() {
             localStorage.setItem('mangoOrders', JSON.stringify(orders));
+        }
+
+        // 匯出 CSV
+        function exportCSV() {
+            if (orders.length === 0) {
+                alert('目前沒有訂單可匯出！');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "姓名,數量,單價,總價\n";
+            orders.forEach(order => {
+                csvContent += `${order.name},${order.quantity},${unitPrice},${order.total}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            const date = new Date().toISOString().slice(0,10);
+            link.setAttribute("download", `芒果訂單_${date}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
