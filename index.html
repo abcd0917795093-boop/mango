@@ -1,24 +1,66 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>台南愛文芒果訂單</title>
-<style>
-body { font-family: Arial, sans-serif; background: #fff8ec; margin: 0; padding: 0; }
-.container { max-width: 600px; margin: 30px auto; background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-h1 { text-align: center; color: #ff8c00; }
-img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
-iframe { width: 100%; height: 800px; border: none; }
-</style>
+    <meta charset="UTF-8">
+    <title>芒果訂單表</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #f2a654; color: white; }
+        input[type="text"], input[type="number"] { padding: 5px; }
+        button { padding: 5px 10px; margin-left: 5px; }
+    </style>
 </head>
 <body>
+    <h1>芒果訂單表</h1>
+    <div>
+        <label>姓名: <input type="text" id="name"></label>
+        <label>數量: <input type="number" id="quantity" min="1"></label>
+        <button onclick="addOrder()">新增訂單</button>
+    </div>
 
-<div class="container">
-  <h1>🍋 台南愛文芒果訂單</h1>
-  <img src="https://images.unsplash.com/photo-1591073113125-e46713c829ed" alt="愛文芒果">
-  <iframe src="https://forms.gle/SszUZiTzfsfrse4Y9" width="100%" height="800" frameborder="0">載入中…</iframe>
-</div>
+    <table id="orderTable">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>數量</th>
+                <th>單價</th>
+                <th>總價</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
+    <script>
+        const unitPrice = 50; // 假設每顆芒果 50 元
+        function addOrder() {
+            const name = document.getElementById('name').value.trim();
+            const quantity = parseInt(document.getElementById('quantity').value);
+
+            if (!name || !quantity || quantity <= 0) {
+                alert('請輸入有效的姓名和數量！');
+                return;
+            }
+
+            const table = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            const cellName = newRow.insertCell(0);
+            const cellQuantity = newRow.insertCell(1);
+            const cellUnit = newRow.insertCell(2);
+            const cellTotal = newRow.insertCell(3);
+
+            cellName.textContent = name;
+            cellQuantity.textContent = quantity;
+            cellUnit.textContent = unitPrice;
+            cellTotal.textContent = quantity * unitPrice;
+
+            // 清空輸入欄位
+            document.getElementById('name').value = '';
+            document.getElementById('quantity').value = '';
+        }
+    </script>
 </body>
 </html>
