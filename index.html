@@ -3,97 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>台南愛文芒果｜產地直送</title>
+<title>台南愛文芒果訂單</title>
 <style>
-body { margin:0; font-family: Arial, sans-serif; background:#fff8ec; }
-.container { max-width:480px; margin:auto; background:#ffffff; }
-img { width:100%; display:block; }
-.content { padding:20px; }
-h1 { color:#ff8c00; }
-.price { font-size:22px; color:#d84315; font-weight:bold; margin:10px 0;}
-.warning { color:red; font-size:16px; font-weight:bold; margin-bottom:10px; }
-.form-group { margin-bottom:15px; }
-input, textarea { width:100%; padding:10px; font-size:16px; }
-.submit { background:#ff8c00; color:white; border:none; width:100%; padding:16px; font-size:18px; border-radius:10px; }
-.manual-copy { background:#f2f2f2; padding:15px; border-radius:8px; margin-top:15px; display:none; font-size:16px; word-break: break-word; }
-.step { display:flex; align-items:center; margin-bottom:10px; }
-.step img { width:50px; height:50px; margin-right:10px; }
-.step-text { font-size:16px; }
+body { font-family: Arial, sans-serif; background: #fff8ec; margin: 0; padding: 0; }
+.container { max-width: 600px; margin: 30px auto; background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+h1 { text-align: center; color: #ff8c00; }
+img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
+iframe { width: 100%; height: 800px; border: none; }
 </style>
 </head>
 <body>
 
 <div class="container">
-
+  <h1>🍋 台南愛文芒果訂單</h1>
   <img src="https://images.unsplash.com/photo-1591073113125-e46713c829ed" alt="愛文芒果">
-
-  <div class="content">
-    <h1>🍋 台南玉井 愛文芒果</h1>
-    <p>產地直送，新鮮現採，香甜多汁。</p>
-    <div class="price">10 台斤 / NT$1200</div>
-
-    <div class="warning">
-      ⚠️ 填完表單後<br>
-      👉 手機會跳到 LINE<br>
-      👉 請「按送出」我們才會收到
-    </div>
-
-    <!-- 長輩友善操作圖示 -->
-    <h2>📌 三步驟下單教學</h2>
-    <div class="step">
-      <img src="https://img.icons8.com/color/48/000000/1-circle.png"/>
-      <div class="step-text">填寫姓名、電話、數量</div>
-    </div>
-    <div class="step">
-      <img src="https://img.icons8.com/color/48/000000/2-circle.png"/>
-      <div class="step-text">按「跳到 LINE → 請按送出」</div>
-    </div>
-    <div class="step">
-      <img src="https://img.icons8.com/color/48/000000/3-circle.png"/>
-      <div class="step-text">LINE 打開後，按「送出」完成訂單</div>
-    </div>
-
-    <!-- 訂單表單 -->
-    <form onsubmit="sendToLine(); return false;">
-      <div class="form-group"><input id="name" placeholder="姓名" required></div>
-      <div class="form-group"><input id="phone" placeholder="電話" required></div>
-      <div class="form-group"><input id="qty" type="number" placeholder="訂購箱數" required></div>
-      <div class="form-group"><textarea id="note" placeholder="備註（可不填）"></textarea></div>
-      <button class="submit" type="submit">📲 跳到 LINE → 請按送出</button>
-    </form>
-
-    <div class="manual-copy" id="manualCopy"></div>
-
-  </div>
+  <iframe src="https://forms.gle/SszUZiTzfsfrse4Y9" width="100%" height="800" frameborder="0">載入中…</iframe>
 </div>
-
-<script>
-function sendToLine() {
-  const msg =
-`我要訂購【台南愛文芒果】
-姓名：${name.value}
-電話：${phone.value}
-數量：${qty.value} 箱
-備註：${note.value || "無"}`;
-
-  // 嘗試打開 LINE
-  let opened = false;
-  try {
-    window.location.href = "line://msg/text/" + encodeURIComponent(msg);
-    opened = true;
-  } catch(e) {
-    opened = false;
-  }
-
-  // 雙保險：無法跳 LINE → 顯示手動複製
-  if (!opened) {
-    const manual = document.getElementById("manualCopy");
-    manual.style.display = "block";
-    manual.innerText = "⚠️ 無法自動跳到 LINE，請手動複製以下文字到 LINE：\n\n" + msg;
-  }
-}
-</script>
 
 </body>
 </html>
-
